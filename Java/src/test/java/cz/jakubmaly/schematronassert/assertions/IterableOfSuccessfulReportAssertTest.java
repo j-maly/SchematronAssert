@@ -40,7 +40,7 @@ public class IterableOfSuccessfulReportAssertTest {
 				return failedAssert.getFlag() != null && failedAssert.getFlag().equals("warning");
 			}
 		};
-		assertThat(reports).filteredBy(condition).containsOnly(r1, r4);
+		assertSuccessfulReports(reports).filteredBy(condition).containsOnly(r1, r4);
 	}
 
 }

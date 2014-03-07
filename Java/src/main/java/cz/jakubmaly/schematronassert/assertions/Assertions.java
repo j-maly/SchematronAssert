@@ -126,11 +126,11 @@ public class Assertions {
 		org.assertj.core.api.Assertions.fail(message);
 	}
 
-	public static IterableOfFailedAssertAssert assertThat(List<FailedAssert> failedAsserts) {
+	public static IterableOfFailedAssertAssert assertFailedAsserts(List<FailedAssert> failedAsserts) {
 		return new IterableOfFailedAssertAssert(failedAsserts);
 	}
 
-	public static IterableOfSuccessfulReportAssert assertThat(List<SuccessfulReport> failedAsserts) {
+	public static IterableOfSuccessfulReportAssert assertSuccessfulReports(List<SuccessfulReport> failedAsserts) {
 		return new IterableOfSuccessfulReportAssert(failedAsserts);
 	}
 }

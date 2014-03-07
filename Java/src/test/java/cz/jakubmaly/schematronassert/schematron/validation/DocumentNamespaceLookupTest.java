@@ -48,9 +48,9 @@ public class DocumentNamespaceLookupTest {
 			);
 		assertThat(schema.xpathDefaultNamespace).isEqualTo("http://www.example.com/books");
 		verify(logger).debug("Running namespace scan in document...");
-		verify(logger).debug("Adding namespace with prefix %s:%s", "xml", "http://www.w3.org/XML/1998/namespace");
-		verify(logger).debug("Adding namespace with prefix %s:%s", "h", "http://html");
-		verify(logger).debug("Setting xpath default namespace: %s", "http://www.example.com/books");
+		verify(logger).debug("Adding namespace with prefix xml:http://www.w3.org/XML/1998/namespace");
+		verify(logger).debug("Adding namespace with prefix h:http://html");
+		verify(logger).debug("Setting xpath default namespace: http://www.example.com/books");
 	}
 
 	@Test
@@ -138,8 +138,8 @@ public class DocumentNamespaceLookupTest {
 		documentNamespaceLookup.logExplicitNamespaces(schema);
 		// ASSERT
 		verify(logger).debug("Explicitly defined namespaces: ");
-		verify(logger).debug("%s: %s", "p1", "uri1");
-		verify(logger).debug("%s: %s", "p2", "uri2");
+		verify(logger).debug("p1:uri1");
+		verify(logger).debug("p2:uri2");
 	}
 
 	@Test

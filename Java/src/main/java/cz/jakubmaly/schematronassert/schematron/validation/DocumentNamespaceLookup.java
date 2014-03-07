@@ -21,7 +21,7 @@ public class DocumentNamespaceLookup {
 		try {
 			detect_namespaces = XsltSchematronValidator.initializeTransformer("/xslt/detect_namespaces.xsl");
 		} catch (TransformerException e) {
-			logger.error("Failed DocumentNamespaceLookup  initialization, failed to load detect_namespaces.xsl", e);
+			logger.error("Failed DocumentNamespaceLookup initialization, failed to load detect_namespaces.xsl", e);
 		}
 	}
 
@@ -34,10 +34,10 @@ public class DocumentNamespaceLookup {
 			List<NamespacePrefixDeclaration> namespaces = detectNamespaces(rereadableSource);
 			for (NamespacePrefixDeclaration ns : namespaces) {
 				if (ns.prefix != null && ns.prefix.length() > 0) {
-					logger.debug("Adding namespace with prefix %s:%s", ns.prefix, ns.uri);
+					logger.debug(String.format("Adding namespace with prefix %s:%s", ns.prefix, ns.uri));
 					schema.withNs(ns);
 				} else {
-					logger.debug("Setting xpath default namespace: %s", ns.uri);
+					logger.debug(String.format("Setting xpath default namespace: %s", ns.uri));
 					schema.xpathDefaultNamespace(ns.uri);
 				}
 			}
@@ -84,7 +84,7 @@ public class DocumentNamespaceLookup {
 		}
 		logger.debug("Explicitly defined namespaces: ");
 		for (NamespacePrefixDeclaration ns : schema.namespacePrefixDeclarations) {
-			logger.debug("%s: %s", ns.prefix, ns.uri);
+			logger.debug(String.format("%s:%s", ns.prefix, ns.uri));
 		}
 	}
 }

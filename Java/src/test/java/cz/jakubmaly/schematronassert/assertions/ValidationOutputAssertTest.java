@@ -84,7 +84,7 @@ public class ValidationOutputAssertTest {
 				return failedAssert.getFlag() != null && failedAssert.getFlag().equals("warning");
 			}
 		};
-		assertThat(outputWithManyAsserts.getFailures())
+		assertFailedAsserts(outputWithManyAsserts.getFailures())
 			.filteredBy(condition)
 			.are(condition);
 	}

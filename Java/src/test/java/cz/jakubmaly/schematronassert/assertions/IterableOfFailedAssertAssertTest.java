@@ -63,7 +63,7 @@ public class IterableOfFailedAssertAssertTest {
 				return failedAssert.getFlag() != null && failedAssert.getFlag().equals("warning");
 			}
 		};
-		assertThat(asserts).filteredBy(condition).containsOnly(a1, a4);
+		assertFailedAsserts(asserts).filteredBy(condition).containsOnly(a1, a4);
 	}
 
 	@Test
@@ -78,40 +78,40 @@ public class IterableOfFailedAssertAssertTest {
 			public void describeTo(Description description) {
 			}
 		};
-		assertThat(asserts).filteredBy(matcher).containsOnly(a1, a4);
+		assertFailedAsserts(asserts).filteredBy(matcher).containsOnly(a1, a4);
 	}
 
 	@Test
 	public void testWithText() throws Exception {
-		assertThat(asserts).withText("check this").containsOnly(a2, a3);
+		assertFailedAsserts(asserts).withText("check this").containsOnly(a2, a3);
 	}
 
 	@Test
 	public void testWithId() throws Exception {
-		assertThat(asserts).withId("a2").containsOnly(a2);
-		assertThat(asserts).withId("a3").containsOnly(a3);
-		assertThat(asserts).withId("xxx").isEmpty();
+		assertFailedAsserts(asserts).withId("a2").containsOnly(a2);
+		assertFailedAsserts(asserts).withId("a3").containsOnly(a3);
+		assertFailedAsserts(asserts).withId("xxx").isEmpty();
 	}
 
 	@Test
 	public void testWithLocation() throws Exception {
-		assertThat(asserts).withLocation("place1").containsOnly(a1, a3);
+		assertFailedAsserts(asserts).withLocation("place1").containsOnly(a1, a3);
 	}
 
 	@Test
 	public void testWithRole() throws Exception {
-		assertThat(asserts).withRole("role1").containsOnly(a1, a3);
-		assertThat(asserts).withRole("role4").containsOnly(a4);
+		assertFailedAsserts(asserts).withRole("role1").containsOnly(a1, a3);
+		assertFailedAsserts(asserts).withRole("role4").containsOnly(a4);
 	}
 
 	@Test
 	public void testFromRule() throws Exception {
-		assertThat(asserts).fromRule(r1).containsOnly(a1, a2, a4);
-		assertThat(asserts).fromRule(r2).containsOnly(a3);
+		assertFailedAsserts(asserts).fromRule(r1).containsOnly(a1, a2, a4);
+		assertFailedAsserts(asserts).fromRule(r2).containsOnly(a3);
 	}
 
 	@Test
 	public void testFromPattern() throws Exception {
-		assertThat(asserts).fromPattern(p).containsOnly(a3);
+		assertFailedAsserts(asserts).fromPattern(p).containsOnly(a3);
 	}
 }
