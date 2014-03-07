@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<svrl:schematron-output xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                        xmlns:saxon="http://saxon.sf.net/"
+                        xmlns:schold="http://www.ascc.net/xml/schematron"
+                        xmlns:iso="http://purl.oclc.org/dsdl/schematron"
+                        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+                        xmlns:bk="http://www.example.com/books"
+                        title="A Schema for Books"
+                        schemaVersion=""><!--   
+		   
+		   
+		 --><svrl:ns-prefix-in-attribute-values uri="http://www.example.com/books" prefix="bk"/>
+   <svrl:active-pattern document="file:/D:/GitHub/SchematronAssert/Java/src/test/resources/xml/books_with_namespaces.xml"
+                        id="authorTests"
+                        name="authorTests"/>
+   <svrl:fired-rule context="bk:book"/>
+   <svrl:fired-rule context="bk:book"/>
+   <svrl:successful-report test="count($authors) = 0"
+                       location="/*:books[namespace-uri()='http://www.example.com/books'][1]/*:book[namespace-uri()='http://www.example.com/books'][2]">
+      <svrl:text> A book must have at least one author </svrl:text>
+   </svrl:successful-report>   
+</svrl:schematron-output>

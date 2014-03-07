@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<a>
+    <ns prefix="bk" uri="http://www.example.com/books"/>
+    <ns prefix="xml" uri="http://www.w3.org/XML/1998/namespace"/>
+    <ns prefix="bk" uri="http://www.example.com/books"/>
+    <ns prefix="xml" uri="http://www.w3.org/XML/1998/namespace"/>
+    <ns prefix="bk" uri="http://www.example.com/books"/>
+    <ns prefix="xml" uri="http://www.w3.org/XML/1998/namespace"/>
+    <ns prefix="bk" uri="http://www.example.com/books"/>
+    <ns prefix="xml" uri="http://www.w3.org/XML/1998/namespace"/>
+    <ns prefix="bk" uri="http://www.example.com/books"/>
+    <ns prefix="xml" uri="http://www.w3.org/XML/1998/namespace"/>
+    <ns prefix="bk" uri="http://www.example.com/books"/>
+    <ns prefix="xml" uri="http://www.w3.org/XML/1998/namespace"/>
+    <ns prefix="bk" uri="http://www.example.com/books"/>
+    <ns prefix="xml" uri="http://www.w3.org/XML/1998/namespace"/>
+    <ns prefix="h" uri="http://html"/>
+    <ns prefix="bk" uri="http://www.example.com/books"/>
+    <ns prefix="xml" uri="http://www.w3.org/XML/1998/namespace"/>
+    <ns prefix="bk" uri="http://www.example.com/books"/>
+    <ns prefix="xml" uri="http://www.w3.org/XML/1998/namespace"/>
+    <ns prefix="bk" uri="http://www.example.com/books"/>
+    <ns prefix="xml" uri="http://www.w3.org/XML/1998/namespace"/>
+    <ns prefix="bk" uri="http://www.example.com/books"/>
+    <ns prefix="xml" uri="http://www.w3.org/XML/1998/namespace"/>
+    <ns prefix="bk" uri="http://www.example.com/books"/>
+    <ns prefix="xml" uri="http://www.w3.org/XML/1998/namespace"/>
+    <ns prefix="bk" uri="http://www.example.com/books"/>
+    <ns prefix="xml" uri="http://www.w3.org/XML/1998/namespace"/>
+    <ns prefix="bk" uri="http://www.example.com/books"/>
+    <ns prefix="xml" uri="http://www.w3.org/XML/1998/namespace"/>    
+</a>

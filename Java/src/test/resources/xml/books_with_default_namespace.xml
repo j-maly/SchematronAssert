@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="../schematron/books.sch" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<books xmlns="http://www.example.com/books">
+    <book attribute="asdf">
+        <title>About the world</title>
+        <author>Jim Smith</author>
+        <publisher>
+            <name>Albatros</name>
+            <address>Czech Reublic</address>
+            <h:p xmlns:h="http://html">
+                Some note. 
+            </h:p>
+        </publisher>
+    </book>    
+    <book>
+        <title>Reason</title>
+        <noauthor>Author is missing</noauthor>
+        <publisher>
+            <name>Springer</name>
+            <address>Germany</address>
+        </publisher>
+    </book>
+</books>

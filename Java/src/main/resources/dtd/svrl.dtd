@@ -1,0 +1,53 @@
+<!--
+ (c) International Organization for Standardization 2005. 
+ Permission to copy in any form is granted for use with conforming 
+ SGML systems and applications as defined in ISO 8879, 
+ provided this notice is included in all copies.
+ -->
+<!ELEMENT schematron-output 
+ (textElement*, ns*, (active-pattern, 
+ (fired-rule, (failed-assert|successful-report)*)+)+)>
+<!-- only active patterns are reported -->
+<!ELEMENT active-pattern EMPTY>
+<!-- only references are reported, not the diagnostic -->
+<!ELEMENT diagnostic-reference (#PCDATA) >
+<!-- only failed assertions are reported -->
+<!ELEMENT failed-assert ( diagnostic-reference*, textElement )>
+<!-- only rules that are fired are reported, abstract/extend handling
+ should have been done before -->
+<!ELEMENT fired-rule EMPTY >
+<!-- only namespaces from sch:ns need to be reported -->
+<!ELEMENT ns EMPTY >
+<!-- only successful reports are reported -->
+<!ELEMENT successful-report ( diagnostic-reference*, textElement ) >
+<!ELEMENT textElement (#PCDATA )>
+<!ATTLIST schematron-output
+ title CDATA #IMPLIED
+ phase NMTOKEN #IMPLIED
+ schemaVersion CDATA #IMPLIED >
+<!ATTLIST active-pattern
+ id ID #IMPLIED
+ name CDATA #IMPLIED 
+ role NMTOKEN #IMPLIED >
+<!ATTLIST diagnostic-reference
+ diagnostic NMTOKEN #REQUIRED >
+<!ATTLIST failed-assert
+ id ID #IMPLIED
+ location CDATA #REQUIRED
+ test CDATA #REQUIRED 
+ role NMTOKEN #IMPLIED 
+ flag NMTOKEN #IMPLIED > 
+<!ATTLIST fired-rule
+ id ID #IMPLIED
+ context CDATA #REQUIRED 
+ role NMTOKEN #IMPLIED 
+ flag NMTOKEN #IMPLIED > 
+<!ATTLIST ns
+ prefix NMTOKEN #REQUIRED
+ uri CDATA #REQUIRED > 
+<!ATTLIST successful-report
+ id ID #IMPLIED
+ location CDATA #REQUIRED
+ test CDATA #REQUIRED
+ role NMTOKEN #IMPLIED 
+ flag NMTOKEN #IMPLIED >

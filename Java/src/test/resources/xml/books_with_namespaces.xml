@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<?xml-model href="../schematron/books.sch" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<bk:books xmlns:bk="http://www.example.com/books">
+    <bk:book id="23452354">
+        <bk:title>About the world</bk:title>
+        <bk:author>Jim Smith</bk:author>
+        <bk:publisher>
+            <bk:name>Albatros</bk:name>
+            <bk:address>Czech Reublic</bk:address>
+            <h:p xmlns:h="http://html">
+                Some note. 
+            </h:p>
+        </bk:publisher>
+    </bk:book>    
+    <bk:book>
+        <bk:title>Reason</bk:title>
+        <bk:noauthor>Author is missing</bk:noauthor>
+        <bk:publisher>
+            <bk:name>Springer</bk:name>
+            <bk:address>Germany</bk:address>
+        </bk:publisher>
+    </bk:book>
+</bk:books>

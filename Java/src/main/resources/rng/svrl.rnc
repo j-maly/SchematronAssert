@@ -1,0 +1,77 @@
+default namespace = "http://purl.oclc.org/dsdl/svrl"
+
+start = schematron-output
+schematron-output =
+    element schematron-output {
+        attribute title { text }?,
+        attribute phase { xsd:NMTOKEN }?,
+        attribute schemaVersion { text }?,
+        textElement*,
+        ns*,
+        ns-prefix-in-attribute-values*,
+        (active-pattern,
+         (fired-rule, (failed-assert | successful-report)*)+)+
+    }
+# only active patterns are reported
+active-pattern =
+    element active-pattern {
+        attribute document { text }?,
+        attribute id { xsd:ID }?,
+        attribute name { text }?,
+        attribute role { xsd:NMTOKEN }?,
+        empty
+    }
+# only references are reported, not the diagnostic
+diagnostic-reference =
+    element diagnostic-reference {
+        attribute diagnostic { xsd:NMTOKEN },
+        textElement
+    }
+# only failed assertions are reported
+failed-assert =
+    element failed-assert {
+        attribute id { xsd:ID }?,
+        attribute location { text },
+        attribute test { text },
+        attribute role { xsd:NMTOKEN }?,
+        attribute flag { xsd:NMTOKEN }?,
+        diagnostic-reference*,
+        textElement
+    }
+# only rules that are fired are reported, abstract/extend handling
+# should have been done before
+fired-rule =
+    element fired-rule {
+        attribute id { xsd:ID }?,
+        attribute context { text },
+        attribute role { xsd:NMTOKEN }?,
+        attribute flag { xsd:NMTOKEN }?,
+        empty
+    }
+# only namespaces from sch:ns need to be reported
+ns =
+    element ns {
+        attribute prefix { xsd:NMTOKEN },
+        attribute uri { text },
+        empty
+    }
+    
+ns-prefix-in-attribute-values =     
+    element ns-prefix-in-attribute-values {
+        attribute prefix { xsd:NMTOKEN },
+        attribute uri { text },
+        empty
+    }
+    
+# only successful reports are reported
+successful-report =
+    element successful-report {
+        attribute id { xsd:ID }?,
+        attribute location { text },
+        attribute test { text },
+        attribute role { xsd:NMTOKEN }?,
+        attribute flag { xsd:NMTOKEN }?,
+        diagnostic-reference*,
+        textElement
+    }
+textElement = element text { text }

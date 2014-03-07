@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<svrl:schematron-output xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                        xmlns:saxon="http://saxon.sf.net/"
+                        xmlns:schold="http://www.ascc.net/xml/schematron"
+                        xmlns:iso="http://purl.oclc.org/dsdl/schematron"
+                        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+                        xmlns:ar="http://www.example.com/articles"
+                        title="A Schema for Articles"
+                        schemaVersion=""><!--   
+		   
+		   
+		 --><svrl:ns-prefix-in-attribute-values uri="http://www.example.com/articles" prefix="ar"/>
+   <svrl:active-pattern id="p1"
+                        name="p1"/>
+   <svrl:fired-rule context="ar:article"/>   
+   <svrl:failed-assert test="title">
+      <svrl:text>Article title is missing</svrl:text>
+   </svrl:failed-assert>   
+   <svrl:fired-rule context="ar:page"/>
+   <svrl:failed-assert test="number" flag="warning">
+      <svrl:text>page number is missing on page 1</svrl:text>
+   </svrl:failed-assert>
+   <svrl:fired-rule context="ar:page"/>
+   <svrl:failed-assert test="number" flag="warning">
+      <svrl:text>page number is missing on page 23</svrl:text>
+   </svrl:failed-assert>
+   <svrl:fired-rule context="ar:page"/>
+   <svrl:failed-assert test="number" flag="warning">
+      <svrl:text>page number is missing on page 142</svrl:text>
+   </svrl:failed-assert>   
+</svrl:schematron-output>
