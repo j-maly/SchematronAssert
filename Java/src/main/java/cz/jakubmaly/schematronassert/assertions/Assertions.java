@@ -1,6 +1,9 @@
 package cz.jakubmaly.schematronassert.assertions;
 
-import java.util.*;
+import static org.assertj.core.api.Assertions.*;
+
+import org.apache.commons.lang.*;
+import org.assertj.core.api.*;
 
 import cz.jakubmaly.schematronassert.svrl.model.*;
 
@@ -126,11 +129,129 @@ public class Assertions {
 		org.assertj.core.api.Assertions.fail(message);
 	}
 
-	public static IterableOfFailedAssertAssert assertFailedAsserts(List<FailedAssert> failedAsserts) {
-		return new IterableOfFailedAssertAssert(failedAsserts);
+	public static Condition<FoundTestElement> withFlag(final String flag) {
+		Condition<FoundTestElement> condition = new Condition<FoundTestElement>() {
+			@Override
+			public boolean matches(FoundTestElement examined) {
+				return StringUtils.equals(flag, examined.getFlag());
+			}
+		};
+		return condition;
 	}
 
-	public static IterableOfSuccessfulReportAssert assertSuccessfulReports(List<SuccessfulReport> failedAsserts) {
-		return new IterableOfSuccessfulReportAssert(failedAsserts);
+	public static Condition<FoundTestElement> withLocation(final String location) {
+		Condition<FoundTestElement> condition = new Condition<FoundTestElement>() {
+			@Override
+			public boolean matches(FoundTestElement examined) {
+				return StringUtils.equals(location, examined.getLocation());
+			}
+
+		};
+		return condition;
+	}
+
+	public static Condition<FoundTestElement> withName(final String test) {
+		Condition<FoundTestElement> condition = new Condition<FoundTestElement>() {
+			@Override
+			public boolean matches(FoundTestElement examined) {
+				return StringUtils.equals(test, examined.getTest());
+			}
+		};
+		return condition;
+	}
+
+	public static Condition<FoundTestElement> withRole(final String role) {
+		Condition<FoundTestElement> condition = new Condition<FoundTestElement>() {
+			@Override
+			public boolean matches(FoundTestElement examined) {
+				return StringUtils.equals(role, examined.getRole());
+			}
+		};
+		return condition;
+	}
+
+	public static Condition<FoundTestElement> withId(final String id) {
+		Condition<FoundTestElement> condition = new Condition<FoundTestElement>() {
+			@Override
+			public boolean matches(FoundTestElement examined) {
+				return StringUtils.equals(id, examined.getId());
+			}
+		};
+		return condition;
+	}
+
+	public static Condition<FoundTestElement> withTest(final String test) {
+		Condition<FoundTestElement> condition = new Condition<FoundTestElement>() {
+			@Override
+			public boolean matches(FoundTestElement examined) {
+				return examined.getTest() != null && StringUtils.equals(test, examined.getTest());
+			}
+		};
+		return condition;
+	}
+
+	public static Condition<FoundTestElement> withText(final String text) {
+		Condition<FoundTestElement> condition = new Condition<FoundTestElement>() {
+			@Override
+			public boolean matches(FoundTestElement examined) {
+				return examined.getText() != null && StringUtils.equals(text, examined.getText().getText());
+			}
+		};
+		return condition;
+	}
+
+	public static Condition<FoundTestElement> fromRule(final FiredRule rule) {
+		Condition<FoundTestElement> condition = new Condition<FoundTestElement>() {
+			@Override
+			public boolean matches(FoundTestElement examined) {
+				return ObjectUtils.equals(examined.getFiredRule(), rule);
+			}
+		};
+		return condition;
+	}
+
+	public static Condition<FoundTestElement> fromPattern(final ActivePattern pattern) {
+		Condition<FoundTestElement> condition = new Condition<FoundTestElement>() {
+			@Override
+			public boolean matches(FoundTestElement examined) {
+				return ObjectUtils.equals(examined.getPattern(), pattern);
+			}
+		};
+		return condition;
+	}
+
+	public static Condition<Object> isFiredRule() {
+		Condition<Object> condition = new Condition<Object>() {
+			@Override
+			public boolean matches(Object value) {
+				return value instanceof FiredRule;
+			}
+		};
+		return condition;
+	}
+
+	public static Condition<Object> isFailedAssert() {
+		Condition<Object> condition = new Condition<Object>() {
+			@Override
+			public boolean matches(Object value) {
+				return value instanceof FailedAssert;
+			}
+		};
+		return condition;
+	}
+
+	public static Condition<Object> isSuccessfulReport() {
+		Condition<Object> condition = new Condition<Object>() {
+			@Override
+			public boolean matches(Object value) {
+				return value instanceof SuccessfulReport;
+			}
+		};
+		return condition;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static Condition<Object> isFailedAssertOrSuccessfulReport() {
+		return anyOf(isSuccessfulReport(), isFailedAssert());
 	}
 }

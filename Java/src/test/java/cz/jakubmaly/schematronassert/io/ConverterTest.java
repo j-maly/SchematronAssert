@@ -1,16 +1,15 @@
-package cz.jakubmaly.schematronassert.schematron.serialization;
+package cz.jakubmaly.schematronassert.io;
 
 import static org.mockito.Mockito.*;
 
 import java.io.*;
 
-import javax.xml.transform.*;
 import javax.xml.transform.stream.*;
-
-import net.sf.saxon.*;
 
 import org.custommonkey.xmlunit.*;
 import org.junit.*;
+
+import cz.jakubmaly.schematronassert.test.*;
 
 public class ConverterTest {
 
@@ -21,15 +20,8 @@ public class ConverterTest {
 		// ACT 
 		StreamSource source = Converter.createStreamSource(text);
 		// ASSERT
-		StringWriter outputWriter = new StringWriter();
-		StreamResult output = new StreamResult(outputWriter);
-		createIdentityTransformer().transform(source, output);
-		XMLAssert.assertXMLEqual(text, outputWriter.toString());
-	}
-
-	private Transformer createIdentityTransformer() throws TransformerConfigurationException, TransformerFactoryConfigurationError {
-		Transformer t = TransformerFactoryImpl.newInstance().newTransformer();
-		return t;
+		String outputString = TestUtils.getXmlAsString(source);
+		XMLAssert.assertXMLEqual(text, outputString);
 	}
 
 	@Test
@@ -40,15 +32,11 @@ public class ConverterTest {
 		// ACT 
 		StreamSource rereadableSoruce = Converter.createRereadableSource(source);
 		// ASSERT 
-		StringWriter outputWriter = new StringWriter();
-		StreamResult output = new StreamResult(outputWriter);
-		createIdentityTransformer().transform(rereadableSoruce, output);
-		XMLAssert.assertXMLEqual(text, outputWriter.toString());
+		String outputString = TestUtils.getXmlAsString(rereadableSoruce);
+		XMLAssert.assertXMLEqual(text, outputString);
 		// now use the source again - should give the same result  
-		outputWriter = new StringWriter();
-		output = new StreamResult(outputWriter);
-		createIdentityTransformer().transform(rereadableSoruce, output);
-		XMLAssert.assertXMLEqual(text, outputWriter.toString());
+		outputString = TestUtils.getXmlAsString(source);
+		XMLAssert.assertXMLEqual(text, outputString);
 	}
 
 	@Test
@@ -62,12 +50,12 @@ public class ConverterTest {
 		// ASSERT 
 		StringWriter outputWriter = new StringWriter();
 		StreamResult output = new StreamResult(outputWriter);
-		createIdentityTransformer().transform(rereadableSoruce, output);
+		TestUtils.createIdentityTransformer().transform(rereadableSoruce, output);
 		XMLAssert.assertXMLEqual(text, outputWriter.toString());
 		// now use the source again - should give the same result  
 		outputWriter = new StringWriter();
 		output = new StreamResult(outputWriter);
-		createIdentityTransformer().transform(rereadableSoruce, output);
+		TestUtils.createIdentityTransformer().transform(rereadableSoruce, output);
 		XMLAssert.assertXMLEqual(text, outputWriter.toString());
 	}
 
@@ -79,5 +67,27 @@ public class ConverterTest {
 		when(source.getInputStream()).thenReturn(null);
 		// ACT
 		Converter.createRereadableSource(source);
+	}
+
+	@Test
+	public void testJdom1() throws Exception {
+		org.jdom.Document jdom1document = new org.jdom.Document();
+		org.jdom.Element root = new org.jdom.Element("root");
+		jdom1document.setContent(root);
+		// ACT
+		StreamSource source = Converter.createStreamSource(jdom1document);
+		String outputString = TestUtils.getXmlAsString(source);
+		XMLAssert.assertXMLEqual("<root />", outputString);
+	}
+
+	@Test
+	public void testJdom2() throws Exception {
+		org.jdom2.Document jdom2document = new org.jdom2.Document();
+		org.jdom2.Element root = new org.jdom2.Element("root");
+		jdom2document.setContent(root);
+		// ACT
+		StreamSource source = Converter.createStreamSource(jdom2document);
+		String outputString = TestUtils.getXmlAsString(source);
+		XMLAssert.assertXMLEqual("<root />", outputString);
 	}
 }

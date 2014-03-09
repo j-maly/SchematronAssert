@@ -18,6 +18,7 @@ import org.powermock.modules.junit4.*;
 import org.powermock.reflect.*;
 import org.slf4j.*;
 
+import cz.jakubmaly.schematronassert.io.*;
 import cz.jakubmaly.schematronassert.schematron.model.*;
 import cz.jakubmaly.schematronassert.schematron.serialization.*;
 import cz.jakubmaly.schematronassert.test.*;
@@ -132,8 +133,8 @@ public class DocumentNamespaceLookupTest {
 	public void should_log_two_namespaces() throws Exception {
 		// ARRANGE
 		Schema schema = SchemaBuilder.schema();
-		schema.withNs("p1", "uri1");
-		schema.withNs("p2", "uri2");
+		schema.withNamespace("p1", "uri1");
+		schema.withNamespace("p2", "uri2");
 		// ACT
 		documentNamespaceLookup.logExplicitNamespaces(schema);
 		// ASSERT

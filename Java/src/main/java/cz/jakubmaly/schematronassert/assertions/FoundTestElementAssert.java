@@ -1,8 +1,6 @@
 package cz.jakubmaly.schematronassert.assertions;
 
 // Assertions is needed if an assertion for Iterable is generated
-import static org.assertj.core.api.Assertions.*;
-
 import org.assertj.core.api.*;
 import org.assertj.core.api.Assertions;
 
@@ -59,9 +57,10 @@ public class FoundTestElementAssert extends AbstractAssert<FoundTestElementAsser
 		// not null.
 		isNotNull();
 
-    // check that given DiagnosticReference varargs is not null.
-    if (diagnosticReference == null) throw new AssertionError("Expecting diagnosticReference parameter not to be null.");
-    
+		// check that given DiagnosticReference varargs is not null.
+		if (diagnosticReference == null)
+			throw new AssertionError("Expecting diagnosticReference parameter not to be null.");
+
 		// check with standard error message (see commented below to set your
 		// own message).
 		Assertions.assertThat(actual.getDiagnosticReference()).contains(diagnosticReference);
@@ -104,34 +103,45 @@ public class FoundTestElementAssert extends AbstractAssert<FoundTestElementAsser
 
 	/**
 	 * Verifies that the actual FoundTestElement's flag is equal to the given
-   * @param firedRule the given firedRule to compare the actual FoundTestElement's firedRule to.
-   * @return this assertion object.
-   * @throws AssertionError - if the actual FoundTestElement's firedRule is not equal to the given one.
-   */
-  public FoundTestElementAssert hasFiredRule(FiredRule firedRule) {
-    // check that actual FoundTestElement we want to make assertions on is not null.
-    isNotNull();
+	 * 
+	 * @param firedRule
+	 *            the given firedRule to compare the actual FoundTestElement's
+	 *            firedRule to.
+	 * @return this assertion object.
+	 * @throws AssertionError
+	 *             - if the actual FoundTestElement's firedRule is not equal to
+	 *             the given one.
+	 */
+	public FoundTestElementAssert hasFiredRule(FiredRule firedRule) {
+		// check that actual FoundTestElement we want to make assertions on is not null.
+		isNotNull();
 
-    // overrides the default error message with a more explicit one
-    String assertjErrorMessage = "\nExpected firedRule of:\n  <%s>\nto be:\n  <%s>\nbut was:\n  <%s>";
-    
-    // null safe check
-    FiredRule actualFiredRule = actual.getFiredRule();
-    if (!org.assertj.core.util.Objects.areEqual(actualFiredRule, firedRule)) {
-      failWithMessage(assertjErrorMessage, actual, firedRule, actualFiredRule);
-    }
+		// overrides the default error message with a more explicit one
+		String assertjErrorMessage = "\nExpected firedRule of:\n  <%s>\nto be:\n  <%s>\nbut was:\n  <%s>";
 
-    // return the current assertion for method chaining
-    return this;
-  }
+		// null safe check
+		FiredRule actualFiredRule = actual.getFiredRule();
+		if (!org.assertj.core.util.Objects.areEqual(actualFiredRule, firedRule)) {
+			failWithMessage(assertjErrorMessage, actual, firedRule, actualFiredRule);
+		}
 
-  /**
-   * Verifies that the actual FoundTestElement's flag is equal to the given one.
-   * @param flag the given flag to compare the actual FoundTestElement's flag to.
-   * @return this assertion object.
-   * @throws AssertionError - if the actual FoundTestElement's flag is not equal to the given one.
-   */
-  public FoundTestElementAssert hasFlag(String flag) {
+		// return the current assertion for method chaining
+		return this;
+	}
+
+	/**
+	 * Verifies that the actual FoundTestElement's flag is equal to the given
+	 * one.
+	 * 
+	 * @param flag
+	 *            the given flag to compare the actual FoundTestElement's flag
+	 *            to.
+	 * @return this assertion object.
+	 * @throws AssertionError
+	 *             - if the actual FoundTestElement's flag is not equal to the
+	 *             given one.
+	 */
+	public FoundTestElementAssert hasFlag(String flag) {
 		// check that actual FoundTestElement we want to make assertions on is
 		// not null.
 		isNotNull();
@@ -209,28 +219,32 @@ public class FoundTestElementAssert extends AbstractAssert<FoundTestElementAsser
 
 	/**
 	 * Verifies that the actual FoundTestElement's role is equal to the given
-   */
-  public FoundTestElementAssert hasPattern(ActivePattern pattern) {
-    // check that actual FoundTestElement we want to make assertions on is not null.
-    isNotNull();
+	 */
+	public FoundTestElementAssert hasPattern(ActivePattern pattern) {
+		// check that actual FoundTestElement we want to make assertions on is not null.
+		isNotNull();
 
-    // overrides the default error message with a more explicit one
-    String assertjErrorMessage = "\nExpected pattern of:\n  <%s>\nto be:\n  <%s>\nbut was:\n  <%s>";
-    
-    // null safe check
-    ActivePattern actualPattern = actual.getPattern();
-    if (!org.assertj.core.util.Objects.areEqual(actualPattern, pattern)) {
-      failWithMessage(assertjErrorMessage, actual, pattern, actualPattern);
-    }
+		// overrides the default error message with a more explicit one
+		String assertjErrorMessage = "\nExpected pattern of:\n  <%s>\nto be:\n  <%s>\nbut was:\n  <%s>";
 
-    // return the current assertion for method chaining
-    return this;
-  }
+		// null safe check
+		ActivePattern actualPattern = actual.getPattern();
+		if (!org.assertj.core.util.Objects.areEqual(actualPattern, pattern)) {
+			failWithMessage(assertjErrorMessage, actual, pattern, actualPattern);
+		}
 
-  /**
-   * Verifies that the actual FoundTestElement's role is equal to the given one.
-   * @param role the given role to compare the actual FoundTestElement's role to.
-   * @return this assertion object.
+		// return the current assertion for method chaining
+		return this;
+	}
+
+	/**
+	 * Verifies that the actual FoundTestElement's role is equal to the given
+	 * one.
+	 * 
+	 * @param role
+	 *            the given role to compare the actual FoundTestElement's role
+	 *            to.
+	 * @return this assertion object.
 	 * @throws AssertionError
 	 *             - if the actual FoundTestElement's role is not equal to the
 	 *             given one.
@@ -311,30 +325,5 @@ public class FoundTestElementAssert extends AbstractAssert<FoundTestElementAsser
 
 		// return the current assertion for method chaining
 		return this;
-	}
-
-	public static Condition<Object> isFailedAssert() {
-		Condition<Object> condition = new Condition<Object>() {
-			@Override
-			public boolean matches(Object value) {
-				return value instanceof FailedAssert;
-			}
-		};
-		return condition;
-	}
-
-	public static Condition<Object> isSuccessfulReport() {
-		Condition<Object> condition = new Condition<Object>() {
-			@Override
-			public boolean matches(Object value) {
-				return value instanceof SuccessfulReport;
-			}
-		};
-		return condition;
-	}
-
-	@SuppressWarnings("unchecked")
-	public static Condition<Object> isFailedAssertOrSuccessfulReport() {
-		return anyOf(isSuccessfulReport(), isFailedAssert());
 	}
 }

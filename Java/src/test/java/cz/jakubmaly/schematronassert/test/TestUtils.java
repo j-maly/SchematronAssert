@@ -5,6 +5,8 @@ import java.io.*;
 import javax.xml.transform.*;
 import javax.xml.transform.stream.*;
 
+import net.sf.saxon.*;
+
 import org.apache.commons.io.*;
 
 import cz.jakubmaly.schematronassert.schematron.serialization.*;
@@ -22,27 +24,25 @@ public class TestUtils {
 
 	public static ValidationOutput loadSvrlFromResource(String resourceName) {
 		InputStream stream = SchemaSerializer.class.getResourceAsStream(resourceName);
-		SvrlDeserializer deserializer = new SvrlDeserializer();
+		SvrlDeserializer deserializer = new SvrlDeserializerImpl();
 		Source source = new StreamSource(stream);
 		ValidationOutput output = deserializer.deserializeSvrlOutput(source);
 		IOUtils.closeQuietly(stream);
 		return output;
 	}
 
-	public static String prettyPrint(Source source) throws TransformerException {
-		Transformer transformer = TransformerFactory.newInstance().newTransformer();
-		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-		StringWriter resultWriter = new StringWriter();
-		StreamResult result = new StreamResult(resultWriter);
-		transformer.transform(source, result);
-		String xmlString = resultWriter.toString();
-		IOUtils.closeQuietly(resultWriter);
-		return xmlString;
+	public static String getXmlAsString(Source source) throws TransformerConfigurationException, TransformerException,
+			TransformerFactoryConfigurationError {
+		StringWriter outputWriter = new StringWriter();
+		StreamResult output = new StreamResult(outputWriter);
+		createIdentityTransformer().transform(source, output);
+		String outputString = outputWriter.toString();
+		IOUtils.closeQuietly(outputWriter);
+		return outputString;
 	}
 
-	public static String prettyPrint(String string) throws TransformerException {
-		StringReader r = new StringReader(string);
-		StreamSource s = new StreamSource(r);
-		return prettyPrint(s);
+	public static Transformer createIdentityTransformer() throws TransformerConfigurationException, TransformerFactoryConfigurationError {
+		Transformer t = TransformerFactoryImpl.newInstance().newTransformer();
+		return t;
 	}
 }

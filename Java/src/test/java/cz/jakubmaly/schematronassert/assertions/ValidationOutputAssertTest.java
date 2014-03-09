@@ -78,22 +78,15 @@ public class ValidationOutputAssertTest {
 
 	@Test
 	public void should_filter_asserts_by_condition() {
-		Condition<FailedAssert> condition = new Condition<FailedAssert>() {
+		Condition<FailedAssert> warnings = new Condition<FailedAssert>() {
 			@Override
 			public boolean matches(FailedAssert failedAssert) {
 				return failedAssert.getFlag() != null && failedAssert.getFlag().equals("warning");
 			}
 		};
-		assertFailedAsserts(outputWithManyAsserts.getFailures())
-			.filteredBy(condition)
-			.are(condition);
+		assertThat(filter(outputWithManyAsserts.getFailures()).being(warnings).get())
+			.are(warnings);
 	}
-
-	// TODO: ideas
-	// ValidationResult result = validate();
-	// result.failedAsserts().withFlag()...
-	// fromLocation(), withName(), withId(), withRole(), fromRule()
-	// fromLocation(contains("") - string matcher here)
 
 	@Before
 	public void loadSampleOutput() {

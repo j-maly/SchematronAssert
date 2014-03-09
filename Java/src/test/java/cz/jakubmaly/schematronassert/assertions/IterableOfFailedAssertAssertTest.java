@@ -1,12 +1,11 @@
 package cz.jakubmaly.schematronassert.assertions;
 
 import static cz.jakubmaly.schematronassert.assertions.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
 
 import java.util.*;
 
-import org.apache.commons.lang.*;
-import org.assertj.core.api.Condition;
-import org.hamcrest.*;
+import org.assertj.core.api.*;
 import org.junit.*;
 
 import com.google.common.collect.*;
@@ -63,55 +62,40 @@ public class IterableOfFailedAssertAssertTest {
 				return failedAssert.getFlag() != null && failedAssert.getFlag().equals("warning");
 			}
 		};
-		assertFailedAsserts(asserts).filteredBy(condition).containsOnly(a1, a4);
-	}
-
-	@Test
-	public void should_filter_asserts_using_matcher() {
-		org.hamcrest.Matcher<FailedAssert> matcher = new BaseMatcher<FailedAssert>() {
-			@Override
-			public boolean matches(Object item) {
-				return ((FailedAssert) item) != null && ObjectUtils.equals(((FailedAssert) item).getFlag(), "warning");
-			}
-
-			@Override
-			public void describeTo(Description description) {
-			}
-		};
-		assertFailedAsserts(asserts).filteredBy(matcher).containsOnly(a1, a4);
+		assertThat(filter(asserts).being(condition).get()).containsOnly(a1, a4);
 	}
 
 	@Test
 	public void testWithText() throws Exception {
-		assertFailedAsserts(asserts).withText("check this").containsOnly(a2, a3);
+		assertThat(filter(asserts).having(withText("check this")).get()).containsOnly(a2, a3);
 	}
 
 	@Test
 	public void testWithId() throws Exception {
-		assertFailedAsserts(asserts).withId("a2").containsOnly(a2);
-		assertFailedAsserts(asserts).withId("a3").containsOnly(a3);
-		assertFailedAsserts(asserts).withId("xxx").isEmpty();
+		assertThat(filter(asserts).having(withId("a2")).get()).containsOnly(a2);
+		assertThat(filter(asserts).having(withId("a3")).get()).containsOnly(a3);
+		assertThat(filter(asserts).having(withId("xxx")).get()).isEmpty();
 	}
 
 	@Test
 	public void testWithLocation() throws Exception {
-		assertFailedAsserts(asserts).withLocation("place1").containsOnly(a1, a3);
+		assertThat(filter(asserts).having(withLocation("place1")).get()).containsOnly(a1, a3);
 	}
 
 	@Test
 	public void testWithRole() throws Exception {
-		assertFailedAsserts(asserts).withRole("role1").containsOnly(a1, a3);
-		assertFailedAsserts(asserts).withRole("role4").containsOnly(a4);
+		assertThat(filter(asserts).having(withRole("role1")).get()).containsOnly(a1, a3);
+		assertThat(filter(asserts).having(withRole("role4")).get()).containsOnly(a4);
 	}
 
 	@Test
 	public void testFromRule() throws Exception {
-		assertFailedAsserts(asserts).fromRule(r1).containsOnly(a1, a2, a4);
-		assertFailedAsserts(asserts).fromRule(r2).containsOnly(a3);
+		assertThat(filter(asserts).having(fromRule(r1)).get()).containsOnly(a1, a2, a4);
+		assertThat(filter(asserts).having(fromRule(r2)).get()).containsOnly(a3);
 	}
 
 	@Test
 	public void testFromPattern() throws Exception {
-		assertFailedAsserts(asserts).fromPattern(p).containsOnly(a3);
+		assertThat(filter(asserts).having(fromPattern(p)).get()).containsOnly(a3);
 	}
 }

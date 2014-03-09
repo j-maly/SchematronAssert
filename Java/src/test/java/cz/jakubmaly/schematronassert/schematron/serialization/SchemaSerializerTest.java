@@ -18,7 +18,7 @@ public class SchemaSerializerTest {
 	public void should_replicate_sample_books_schema() throws Exception {
 		Schema schema = schema()
 			.title("A Schema for Books")
-			.withNs("bk", "http://www.example.com/books")
+			.withNamespace("bk", "http://www.example.com/books")
 			.withPattern(pattern("authorTests")
 				.withRule(rule()
 					.context("bk:book")

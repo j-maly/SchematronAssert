@@ -27,22 +27,22 @@ public class Schema {
 	public String queryBinding = "xslt2";
 
 	@XmlElement(name = "include")
-	public Collection<Include> includes;
+	public List<Include> includes;
 
 	@XmlElement(name = "title")
 	public String title;
 
 	@XmlElement(name = "ns")
-	public Collection<NamespacePrefixDeclaration> namespacePrefixDeclarations;
+	public List<NamespacePrefixDeclaration> namespacePrefixDeclarations;
 
 	@XmlElement(name = "let")
-	public Collection<LetDeclaration> letDeclarations;
+	public List<LetDeclaration> letDeclarations;
 
 	@XmlElement(name = "phase")
 	public Collection<Phase> phases;
 
 	@XmlElement(name = "pattern")
-	public Collection<Pattern> patterns;
+	public List<Pattern> patterns;
 
 	@XmlTransient
 	/**
@@ -85,12 +85,12 @@ public class Schema {
 		return this;
 	}
 
-	public Schema withNs(String prefix, String uri) {
+	public Schema withNamespace(String prefix, String uri) {
 		NamespacePrefixDeclaration ns = new NamespacePrefixDeclaration(prefix, uri);
-		return withNs(ns);
+		return withNamespace(ns);
 	}
 
-	public Schema withNs(NamespacePrefixDeclaration ns) {
+	public Schema withNamespace(NamespacePrefixDeclaration ns) {
 		if (namespacePrefixDeclarations == null)
 			namespacePrefixDeclarations = new ArrayList<NamespacePrefixDeclaration>();
 		namespacePrefixDeclarations.add(ns);
@@ -101,6 +101,17 @@ public class Schema {
 		if (phases == null)
 			phases = new ArrayList<Phase>();
 		phases.add(phase);
+		return this;
+	}
+
+	public Schema let(String name, String value) {
+		if (letDeclarations == null) {
+			this.letDeclarations = new ArrayList<LetDeclaration>();
+		}
+		LetDeclaration l = new LetDeclaration()
+			.name(name)
+			.value(value);
+		letDeclarations.add(l);
 		return this;
 	}
 
@@ -133,4 +144,29 @@ public class Schema {
 		xpathDefaultNamespace = uri;
 	}
 
+	/**
+	 * Convenience method that returns the last pattern in the schema
+	 */
+	public Pattern getLastPattern() {
+		if (patterns != null && patterns.size() > 0) {
+			Pattern pattern = patterns.get(patterns.size() - 1);
+			return pattern;
+		}
+		return null;
+	}
+
+	/**
+	 * Convenience method that returns the last rule in the last pattern in the
+	 * schema
+	 */
+	public Rule getLastRule() {
+		if (getLastPattern() != null) {
+			Pattern pattern = getLastPattern();
+			if (pattern.rules != null && pattern.rules.size() > 0) {
+				Rule rule = pattern.rules.get(pattern.rules.size() - 1);
+				return rule;
+			}
+		}
+		return null;
+	}
 }

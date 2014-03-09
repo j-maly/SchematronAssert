@@ -9,8 +9,8 @@ import javax.xml.transform.stream.*;
 import org.apache.commons.io.*;
 import org.slf4j.*;
 
+import cz.jakubmaly.schematronassert.io.*;
 import cz.jakubmaly.schematronassert.schematron.model.*;
-import cz.jakubmaly.schematronassert.schematron.serialization.*;
 
 public class DocumentNamespaceLookup {
 	private static Logger logger = LoggerFactory.getLogger(DocumentNamespaceLookup.class);
@@ -35,7 +35,7 @@ public class DocumentNamespaceLookup {
 			for (NamespacePrefixDeclaration ns : namespaces) {
 				if (ns.prefix != null && ns.prefix.length() > 0) {
 					logger.debug(String.format("Adding namespace with prefix %s:%s", ns.prefix, ns.uri));
-					schema.withNs(ns);
+					schema.withNamespace(ns);
 				} else {
 					logger.debug(String.format("Setting xpath default namespace: %s", ns.uri));
 					schema.xpathDefaultNamespace(ns.uri);

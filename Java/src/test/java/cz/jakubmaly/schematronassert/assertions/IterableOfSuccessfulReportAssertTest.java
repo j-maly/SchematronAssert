@@ -1,6 +1,6 @@
 package cz.jakubmaly.schematronassert.assertions;
 
-import static cz.jakubmaly.schematronassert.assertions.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
 
 import java.util.*;
 
@@ -40,7 +40,7 @@ public class IterableOfSuccessfulReportAssertTest {
 				return failedAssert.getFlag() != null && failedAssert.getFlag().equals("warning");
 			}
 		};
-		assertSuccessfulReports(reports).filteredBy(condition).containsOnly(r1, r4);
+		assertThat(filter(reports).having(condition).get()).containsOnly(r1, r4);
 	}
 
 }

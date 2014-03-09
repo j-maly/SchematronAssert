@@ -64,10 +64,11 @@ public class SimpleSchematronTest {
 		return source;
 	}
 
+	// TODO: check these examples
 	// context("book").assert("count(autor)") > 0")
 	// - esapi encoder to encode >
-	// inEvery("book").assert("count(autor)") > 0")
-	// inEvery("book").report("count(autor)") > 0")
+	// forEvery("book").assert("count(autor)") > 0")
+	// forEvery("book").report("count(autor)") > 0")
 	// context("book").assert("autor")
 	// context("book/autor").node() != null
 	// context("count(book/autor)").integer() > 0

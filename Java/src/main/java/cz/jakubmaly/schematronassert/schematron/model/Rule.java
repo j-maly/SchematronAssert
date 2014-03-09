@@ -16,10 +16,10 @@ public class Rule {
 	public String context;
 
 	@XmlElement(name = "let")
-	public Collection<LetDeclaration> letDeclarations;
+	public List<LetDeclaration> letDeclarations;
 
 	@XmlElements(value = { @XmlElement(name = "assert", type = Assert.class), @XmlElement(name = "report", type = Report.class) })
-	public Collection<TestElement> assertionElements;
+	public List<TestElement> assertionElements;
 
 	@XmlElement(name = "extends")
 	private Extends extendsRule;

@@ -11,7 +11,7 @@ import org.junit.*;
 import cz.jakubmaly.schematronassert.svrl.model.*;
 import cz.jakubmaly.schematronassert.test.*;
 
-public class SvrlDeserializerTest {
+public class SvrlDeserializerImplTest {
 
 	SvrlDeserializer deserializer;
 
@@ -59,6 +59,6 @@ public class SvrlDeserializerTest {
 
 	@Before
 	public void setUp() {
-		deserializer = new SvrlDeserializer();
+		deserializer = new SvrlDeserializerImpl();
 	}
 }
