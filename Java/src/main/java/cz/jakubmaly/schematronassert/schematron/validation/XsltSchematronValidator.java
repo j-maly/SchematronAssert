@@ -16,6 +16,8 @@ import cz.jakubmaly.schematronassert.schematron.serialization.*;
 import cz.jakubmaly.schematronassert.svrl.model.*;
 import cz.jakubmaly.schematronassert.svrl.serialization.*;
 import cz.jakubmaly.schematronassert.utils.*;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class XsltSchematronValidator implements SchematronValidator {
 
@@ -37,6 +39,10 @@ public class XsltSchematronValidator implements SchematronValidator {
 	private TransformerFactory transformerFactory;
 	private LoggingErrorListener errorListener;
 
+    private boolean useCache = false;
+    private URIResolver uriResolver;
+    private static final Map<String, Transformer> transformerCache = new ConcurrentHashMap<String, Transformer>();
+    
 	static {
 		pipelineTransformerFactory = new net.sf.saxon.TransformerFactoryImpl();
 		pipelineTransformerFactory.setURIResolver(new ResourceURIResolver("/xslt/"));
@@ -51,7 +57,7 @@ public class XsltSchematronValidator implements SchematronValidator {
 	}
 
 	static Transformer initializeTransformer(String xsltFilePath) throws TransformerException {
-		InputStream xsltStream = XsltSchematronValidator.class.getResourceAsStream(xsltFilePath);
+		InputStream xsltStream = XsltSchematronValidator.class.getResourceAsStream(xsltFilePath);      
 		try {
 			StreamSource xsltSource = new StreamSource(xsltStream);
 			Transformer transformer = pipelineTransformerFactory.newTransformer(xsltSource);
@@ -61,6 +67,12 @@ public class XsltSchematronValidator implements SchematronValidator {
 		}
 	}
 
+    public XsltSchematronValidator(boolean useCache, URIResolver uriResoolver) {
+        this();
+        this.useCache = useCache;
+        this.uriResolver = uriResoolver;
+    }
+    
 	public XsltSchematronValidator() {
 		transformerFactory = new net.sf.saxon.TransformerFactoryImpl();
 		errorListener = new LoggingErrorListener();
@@ -68,26 +80,52 @@ public class XsltSchematronValidator implements SchematronValidator {
 
 	}
 
+    /**
+     * Allow a user to clear the caches.
+     */
+    public static void clearCaches() {
+        transformerCache.clear();
+    }
+    
 	public void validate(StreamSource xmlSource, StreamSource schemaSource, Result outputTarget)
 			throws ValidationException {
+        
 		StringWriter step1writer = new StringWriter();
 		StringWriter step2writer = new StringWriter();
 		StringWriter step3writer = new StringWriter();
 		StringReader step4Reader = null;
 		try {
-			iso_dsdl_include.transform(schemaSource, new StreamResult(step1writer));
-			String step1string = step1writer.toString();
+            
+            if (useCache 
+                    && schemaSource.getSystemId() != null && !schemaSource.getSystemId().isEmpty() 
+                    && transformerCache.containsKey(schemaSource.getSystemId())) {
+                logger.debug(">>>>> Found cached transformer for key " + schemaSource.getSystemId());
+                Transformer finalTransformer = transformerCache.get(schemaSource.getSystemId());
+                synchronized (finalTransformer) {
+                    finalTransformer.transform(xmlSource, outputTarget);
+                }                
+            } else {
+                iso_dsdl_include.transform(schemaSource, new StreamResult(step1writer));
+                String step1string = step1writer.toString();
 
-			performSchematronStep(iso_abstract_expand, step1string, step2writer, null);
-			String step2string = step2writer.toString();
+                performSchematronStep(iso_abstract_expand, step1string, step2writer, null);
+                String step2string = step2writer.toString();
 
-			performSchematronStep(iso_svrl_for_xslt2, step2string, step3writer, xpathDefaultNamespace);
-			String step3string = step3writer.toString();
-			step4Reader = new StringReader(step3string);
-			StreamSource step4source = new StreamSource(step4Reader);
+                performSchematronStep(iso_svrl_for_xslt2, step2string, step3writer, xpathDefaultNamespace);
+                String step3string = step3writer.toString();
+                step4Reader = new StringReader(step3string);
+                StreamSource step4source = new StreamSource(step4Reader);
 
-			Transformer finalTransformer = transformerFactory.newTransformer(step4source);
-			finalTransformer.transform(xmlSource, outputTarget);
+                Transformer finalTransformer = transformerFactory.newTransformer(step4source);
+                if (uriResolver != null) {
+                    finalTransformer.setURIResolver(uriResolver);
+                }
+                finalTransformer.transform(xmlSource, outputTarget);
+                if (useCache
+                        && schemaSource.getSystemId() != null && !schemaSource.getSystemId().isEmpty()) {
+                    transformerCache.put(schemaSource.getSystemId(), finalTransformer);
+                }
+            }
 		} catch (TransformerException e) {
 			StringBuffer message = new StringBuffer("Error during validation");
 			errorListener.flushTo(message);
